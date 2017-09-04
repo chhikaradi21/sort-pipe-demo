@@ -1,28 +1,85 @@
-# PipeSortDemoApp
+# AngularJS 4 Pipe For Sorting
+This Pipe can be used with *ngFor directive of AngularJS 4. This has the functionality to sort basic data types of JavaScript.
+You can use it just by including in your component and applying on *ngFor directive.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.1.2.
+### Features
+1. This can be used on tables created via *ngFor.
+2. Can sort data in increasing as well as decreasing order.
+3. Can be used with multiple data types like string, number, date.
 
-## Development server
+### How it works?
+Just apply it like other default pipes with *ngFor and pass selectedField variable on which you want to sort in array of object. For example if you want to sort on age pass it like 'age' for ascending order and pass '-name' for descending order.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Usage:
+```
+*ngFor="let item of dataArr | sort : selectedField"
 
-## Code scaffolding
+```
+Example
+```
+ <table class="table">
+    <thead>
+    <tr>
+      <th (click)="setFieldName('name')">Name<span class="glyphicon glyphicon-sort" aria-hidden="true" 
+          style="margin-left : 5px"></span></th>
+      <th (click)="setFieldName('city')">City<span class="glyphicon glyphicon-sort" aria-hidden="true" 
+          style="margin-left : 5px"></span></th>
+      <th (click)="setFieldName('mobile')">Mobile<span class="glyphicon glyphicon-sort" aria-hidden="true" 
+          style="margin-left : 5px"></span></th>
+      <th (click)="setFieldName('age')">Age<span class="glyphicon glyphicon-sort" aria-hidden="true" 
+          style="margin-left : 5px"></span></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of dataArr | sort : selectedField">
+      <td>{{item.name}}</td>
+      <td>{{item.city}}</td>
+      <td>{{item.mobile}}</td>
+      <td>{{item.age}}</td>
+    </tr>
+    </tbody>
+  </table>
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|module`.
+Code:
+```
+import { Pipe, PipeTransform } from '@angular/core';
 
-## Build
+@Pipe({
+  name: 'sort'
+})
+export class SortPipe implements PipeTransform {
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+  transform(arr: any[], sortBy: string): any {
+    const order = sortBy.charAt(0) === '-' ? 'desc' : 'asc';
+    sortBy = order === 'desc' ? sortBy.substr(1) : sortBy;
 
-## Running unit tests
+    const type = arr && arr.length && typeof(arr[0][sortBy]);
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+    function sortFunction(a, b) {
+      if (type !== 'string' && a[sortBy] < b[sortBy] ||
+          type === 'string' && a[sortBy].toLowerCase() < b[sortBy].toLowerCase()) {
+        return order === 'asc' ? -1 : 1;
+      } else if (type !== 'string' && a[sortBy] > b[sortBy] ||
+          type === 'string' && a[sortBy].toLowerCase() > b[sortBy].toLowerCase()) {
+        return order === 'asc' ? 1 : -1;
+      } else {return 0};
+    };
 
-## Running end-to-end tests
+    return arr.sort(sortFunction);
+  }
+}
+```
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
+### How to run on local
+Follow these steps
+1. git clone git@github.com:chhikaradi21/sort-pipe-demo.git
+2. cd sort-pipe-demo
+3. npm install(using node version 6)
+4. ng serve
+5. Access in browser at port 4200 (localhost:4200)
+
 
 ## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+1. This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.1.2.
+2. Node version 6
