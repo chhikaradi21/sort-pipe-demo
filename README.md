@@ -126,7 +126,7 @@ Follow these steps
 5. Access in browser at port 4200 (localhost:4200)
 
 ### Working Demo
-<a href="https://www.adityachhikara.me/github-demos?block=sort-pipe" target="_blank">See Sorting Demo</a>
+<a href="http://adityachhikara.me/github-demos?block=sort-pipe" target="_blank">See Sorting Demo</a>
 
 
 ## Further help
